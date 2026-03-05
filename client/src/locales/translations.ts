@@ -1,0 +1,26 @@
+export const translations = {
+  en: {
+    weekDays: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+    searchPlaceholder: "Search cards...",
+    confirmDelete: "Delete this task?",
+    emptyTitleAlert: "Title cannot be empty",
+    saveError: "Error while saving",
+    brandName: "Calendar",
+    taskFor: "Task for",
+    labelsTitle: "Labels",
+    modalPlaceholder: "What needs to be done?",
+    saveButton: "Save",
+  },
+  uk: {
+    weekDays: ["Нд", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
+    searchPlaceholder: "Пошук карток...",
+    confirmDelete: "Видалити це завдання?",
+    emptyTitleAlert: "Назва не може бути порожньою",
+    saveError: "Помилка при збереженні",
+    brandName: "Календар",
+    taskFor: "Завдання на",
+    labelsTitle: "Мітки",
+    modalPlaceholder: "Що потрібно зробити?",
+    saveButton: "Зберегти",
+  },
+};
