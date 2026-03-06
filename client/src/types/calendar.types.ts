@@ -1,4 +1,4 @@
-import type { TaskType } from "@shared/task.interface";
+import type { TaskType, UserType } from "@shared/task.interface";
 
 export type Translations = {
   taskFor: string;
@@ -11,7 +11,35 @@ export type Translations = {
   saveButton: string;
   modalPlaceholder: string;
   labelsTitle: string;
+  userPrefix: string;
+  logout: string;
+  login: string;
+  prevMonth: string;
+  nextMonth: string;
+  loginTitle: string;
+  registerTitle: string;
+  signIn: string;
+  signUp: string;
+  noAccount: string;
+  haveAccount: string;
+  emailLabel: string;
+  passwordLabel: string;
+  nameLabel: string;
+  authError: string;
+  errInvalidEmail: string;
+  errPasswordLength: string;
+  errNameRequired: string;
+  loadingSignIn: string;
+  loadingSignUp: string;
+  errorInvalidCredentials: string;
+  errorUserExists: string;
+  errorDefault: string;
+  loginToCreateTask: string;
+  authRequiredTitle: string;
+  authRequiredDesc: string;
 };
+
+export type AuthUser = Omit<UserType, "password">;
 
 export interface TaskModalProps {
   isOpen: boolean;
@@ -24,6 +52,8 @@ export interface TaskModalProps {
   language: string;
   selectedLabels: string[];
   setSelectedLabels: (labels: string[]) => void;
+  user: AuthUser | null;
+  onOpenAuth: () => void;
 }
 
 export interface Holiday {
@@ -51,6 +81,5 @@ export interface HeaderProps {
   goToTask: (task: TaskType) => void;
   setViewDate: (date: Date) => void;
   language: "en" | "uk";
-  setLanguage: (lang: "en" | "uk") => void;
-  translations: Translations
+  translations: Translations;
 }

@@ -22,7 +22,11 @@ export const globalStyles = css`
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     background-color: #ebedf0;
   }
+  button {
+    &:focus {
+      outline: none;
+    }
+  }
 `;
 
 export const defaultDate = new Date(2026, 2, 1);
-

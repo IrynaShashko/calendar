@@ -1,14 +1,19 @@
-import axios from "axios";
+import api from "./axios";
+import type { TaskType } from "@shared/task.interface";
 
-const API_URL = "/api/tasks";
+const TASKS_URL = "/tasks";
 
-export const getTasks = async () => {
-  const response = await axios.get(`${API_URL}`);
+export const getTasks = async (): Promise<TaskType[]> => {
+  const response = await api.get(TASKS_URL);
   return response.data;
 };
 
-export const createTask = async (task: { title: string; date: Date; labels: string[] }) => {
-  const response = await axios.post("/api/tasks", task);
+export const createTask = async (task: {
+  title: string;
+  date: Date;
+  labels: string[];
+}) => {
+  const response = await api.post(TASKS_URL, task);
   return response.data;
 };
 
@@ -21,10 +26,10 @@ export const updateTask = async (
     order?: number;
   },
 ) => {
-  const response = await axios.patch(`/api/tasks/${id}`, update);
+  const response = await api.patch(`${TASKS_URL}/${id}`, update);
   return response.data;
 };
 
 export const deleteTask = async (id: string) => {
-  await axios.delete(`/api/tasks/${id}`);
+  await api.delete(`${TASKS_URL}/${id}`);
 };

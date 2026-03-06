@@ -10,6 +10,207 @@ export const FullScreenContainer = styled.div`
   background-color: #f4f5f7;
 `;
 
+export const UserContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+`;
+
+export const UserName = styled.span`
+  font-size: 14px;
+  font-weight: 500;
+  color: #efefef;
+  max-width: 250px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
+export const ButtonsWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
+export const NavigationContainer = styled.nav`
+  display: flex;
+  align-items: center;
+  gap: 20px;
+`;
+
+export const LoginButton = styled.button`
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #efefef;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  font-weight: bold;
+  border: none;
+  text-transform: uppercase;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.4);
+  }
+`;
+
+export const LogoutButton = styled.button`
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.3);
+  color: white;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  border: none;
+  text-transform: uppercase;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.4);
+  }
+`;
+
+export const Overlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+`;
+
+export const AuthCard = styled.div`
+  width: 100%;
+  max-width: 500px;
+  background: #e8e8e8;
+  padding: 0px 25px;
+  border-radius: 6px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  color: white;
+`;
+
+export const CloseButton = styled.button`
+  position: absolute;
+  top: 25px;
+  right: 25px;
+  padding: 5px;
+  background: none;
+  border: none;
+  color: #d13900;
+  font-size: 30px;
+  cursor: pointer;
+  &:hover {
+    color: #b12f00;
+  }
+`;
+
+export const Title = styled.h2`
+  text-align: center;
+  font-size: 26px;
+  margin-bottom: 24px;
+  font-weight: 700;
+  color: #d13900;
+`;
+
+export const InputGroup = styled.div`
+  margin-bottom: 18px;
+  label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #888888;
+  }
+  input {
+    width: 100%;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.53);
+    border: 1px solid rgba(255, 255, 255, 0.98);
+    border-radius: 6px;
+    color: #393939;
+    font-size: 15px;
+    outline: none;
+    transition: all 0.2s;
+    &:focus {
+      border-color: #d13900;
+      background: rgba(255, 255, 255, 0.08);
+    }
+    &::placeholder {
+      color: #c5c5c5;
+    }
+  }
+`;
+
+export const PasswordWrapper = styled.div`
+  position: relative;
+  input {
+    padding-right: 45px;
+  }
+`;
+
+export const ErrorMessage = styled.div`
+  background: rgba(255, 77, 79, 0.1);
+  color: #ff4d4f;
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  margin-bottom: 15px;
+  text-align: center;
+  border: 1px solid rgba(255, 77, 79, 0.2);
+`;
+
+export const SubmitButton = styled.button`
+  width: 100%;
+  padding: 14px;
+  background: #d13900;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 10px;
+  &:hover {
+    background: #b12f00;
+    transform: translateY(-1px);
+  }
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+`;
+
+export const SwitchText = styled.p`
+  text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
+  color: #888;
+  span {
+    color: #d13900;
+    cursor: pointer;
+    font-weight: 600;
+    margin-left: 6px;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+`;
+
 export const HeaderWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -17,7 +218,7 @@ export const HeaderWrapper = styled.div`
 `;
 
 export const TopBar = styled.div`
-  height: 40px;
+  height: 60px;
   padding: 0 12px;
   display: flex;
   align-items: center;
@@ -29,7 +230,7 @@ export const TopBar = styled.div`
   background-position: center;
   background-repeat: no-repeat;
   background-blend-mode: overlay;
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.15);
 `;
 
 export const LangSwitcher = styled.div`
@@ -37,7 +238,7 @@ export const LangSwitcher = styled.div`
   gap: 4px;
   background: rgba(255, 255, 255, 0.2);
   padding: 2px;
-  border-radius: 4px;
+  border-radius: 6px;
   margin-left: 10px;
 `;
 
@@ -45,7 +246,7 @@ export const LangButton = styled.button<{ active: boolean }>`
   background: ${(props) => (props.active ? "white" : "transparent")};
   color: ${(props) => (props.active ? "#ff9f1a" : "white")};
   border: none;
-  border-radius: 3px;
+  border-radius: 6px;
   padding: 2px 6px;
   font-size: 12px;
   font-weight: bold;
@@ -105,7 +306,7 @@ export const HeaderBrand = styled.div`
 export const HeaderButton = styled.button`
   background: transparent;
   border: none;
-  border-radius: 3px;
+  border-radius: 6px;
   color: #4d4d4d;
   padding: 6px 12px;
   font-size: 18px;
@@ -145,7 +346,7 @@ export const NavButtonGroup = styled.div`
 export const NavButton = styled.button`
   background: #ebecf0;
   border: 1px solid #dfe1e6;
-  border-radius: 3px;
+  border-radius: 6px;
   width: 32px;
   height: 26px;
   display: flex;
@@ -190,9 +391,9 @@ export const DayHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #838c91;
-  font-size: 12px;
-  font-weight: 400;
+  color: #686c6f;
+  font-size: 14px;
+  font-weight: 500;
 `;
 
 export const DayCell = styled.div<{ isCurrentMonth?: boolean }>`
@@ -205,7 +406,7 @@ export const DayCell = styled.div<{ isCurrentMonth?: boolean }>`
   min-height: 0;
   overflow: hidden;
   position: relative;
-  border-radius: 2px;
+  border-radius: 6px;
   cursor: pointer;
   &:hover {
     background-color: ${(props) =>
@@ -225,7 +426,7 @@ export const TaskScrollContainer = styled.div`
   }
   &::-webkit-scrollbar-thumb {
     background: #ccc;
-    border-radius: 4px;
+    border-radius: 6px;
   }
 `;
 
@@ -252,7 +453,7 @@ export const LabelContainer = styled.div`
 export const Label = styled.div<{ color?: string }>`
   width: 32px;
   height: 8px;
-  border-radius: 4px;
+  border-radius: 6px;
   background-color: ${(props) => props.color || "#61bd4f"};
 `;
 
@@ -272,7 +473,7 @@ export const LabelBarContainer = styled.div`
 export const LabelBar = styled.div<{ color: string }>`
   height: 8px;
   width: 40px;
-  border-radius: 4px;
+  border-radius: 6px;
   background-color: ${(props) => props.color};
   &:hover {
     filter: brightness(90%);
@@ -300,7 +501,7 @@ export const LabelsGrid = styled.div`
 export const LabelPill = styled.div<{ color: string; isSelected: boolean }>`
   width: 45px;
   height: 20px;
-  border-radius: 16px;
+  border-radius: 6px;
   background-color: ${(props) => props.color};
   cursor: pointer;
   display: flex;
@@ -324,7 +525,7 @@ export const ModalFooter = styled.div`
 
 export const TaskContainer = styled.div`
   background: white;
-  border-radius: 3px;
+  border-radius: 6px;
   box-shadow: 0 1px 0 rgba(9, 30, 66, 0.25);
   padding: 6px 8px 4px;
   margin-bottom: 4px;
@@ -338,7 +539,7 @@ export const TaskContainer = styled.div`
 
 export const TaskCard = styled.div`
   background: white;
-  border-radius: 3px;
+  border-radius: 6px;
   box-shadow: 0 1px 0 rgba(9, 30, 66, 0.2);
   padding: 6px 8px;
   font-size: 13px;
@@ -401,7 +602,7 @@ export const HolidayLabel = styled.div`
   box-shadow: 0 1px 0 rgba(238, 156, 148, 0.2);
   border: 1px solid #f9d7d9;
   padding: 2px 4px;
-  border-radius: 3px;
+  border-radius: 6px;
   padding: 6px 8px;
   font-size: 13px;
   cursor: default;
@@ -423,7 +624,7 @@ export const ModalOverlay = styled.div`
 export const ModalContent = styled.div`
   background: #f4f5f7;
   padding: 24px;
-  border-radius: 4px;
+  border-radius: 6px;
   width: 400px;
   box-shadow: 0 8px 16px -4px rgba(9, 30, 66, 0.25);
 `;
@@ -433,7 +634,7 @@ export const Button = styled.button`
   background: #5aac44;
   color: white;
   border: none;
-  border-radius: 3px;
+  border-radius: 6px;
   font-weight: 700;
   cursor: pointer;
   &:hover {
@@ -470,7 +671,7 @@ export const SearchInputWrapper = styled.div`
 export const Input = styled.input`
   background: rgba(255, 255, 255, 0.7);
   border: 1px solid #bbb4b7;
-  border-radius: 3px;
+  border-radius: 6px;
   padding: 6px 8px 6px 28px;
   font-size: 14px;
   width: 100%;
@@ -491,7 +692,7 @@ export const Input = styled.input`
 export const TextArea = styled.textarea`
   background: rgba(219, 218, 218, 0.4);
   border: none;
-  border-radius: 3px;
+  border-radius: 6px;
   padding: 10px;
   font-size: 14px;
   width: 100%;
@@ -521,7 +722,7 @@ export const SearchResults = styled.div`
   right: 0;
   width: 100%;
   background: white;
-  border-radius: 3px;
+  border-radius: 6px;
   box-shadow:
     0 8px 16px -4px rgba(9, 30, 66, 0.25),
     0 0 0 1px rgba(9, 30, 66, 0.08);

@@ -1,5 +1,7 @@
+/** @jsxImportSource @emotion/react */
 import {
   BottomBar,
+  ButtonsWrapper,
   CenterTitle,
   DatePickerWrapper,
   HeaderBrand,
@@ -11,9 +13,12 @@ import {
   Input,
   LangButton,
   LangSwitcher,
+  LoginButton,
+  LogoutButton,
   NavButton,
   NavButtonContainer,
   NavButtonGroup,
+  NavigationContainer,
   ResultItem,
   ResultItemDate,
   ResultItemTitle,
@@ -22,8 +27,11 @@ import {
   SearchResults,
   SearchWrapper,
   TopBar,
+  UserContainer,
+  UserName,
 } from "./CalendarStyles";
 
+import { useAuth } from "src/context/AuthContext";
 import type { HeaderProps } from "src/types/calendar.types";
 
 export const Header = ({
@@ -35,10 +43,9 @@ export const Header = ({
   setSearchQuery,
   filteredResults,
   goToTask,
-  language,
-  setLanguage,
   translations,
 }: HeaderProps) => {
+  const { language, setLanguage, user, logout, openAuthModal } = useAuth();
   return (
     <HeaderWrapper>
       <TopBar>
@@ -46,29 +53,57 @@ export const Header = ({
           <HeaderIcon>📅</HeaderIcon>
           <HeaderTitle>{translations.brandName}</HeaderTitle>
         </HeaderBrand>
-        <LangSwitcher>
-          <LangButton
-            active={language === "en"}
-            onClick={() => setLanguage("en")}
-          >
-            EN
-          </LangButton>
-          <LangButton
-            active={language === "uk"}
-            onClick={() => setLanguage("uk")}
-          >
-            UA
-          </LangButton>
-        </LangSwitcher>
+
+        <ButtonsWrapper>
+          <NavigationContainer>
+            {user ? (
+              <UserContainer>
+                <UserName title={user.name}>
+                  {translations.userPrefix} {user.name}
+                </UserName>
+  
+                <LogoutButton onClick={logout}>
+                  {translations.logout}
+                </LogoutButton>
+              </UserContainer>
+            ) : (
+              <LoginButton onClick={openAuthModal}>
+                {translations.login}
+              </LoginButton>
+            )}
+          </NavigationContainer>
+  
+          <LangSwitcher>
+            <LangButton
+              active={language === "en"}
+              onClick={() => setLanguage("en")}
+            >
+              EN
+            </LangButton>
+  
+            <LangButton
+              active={language === "uk"}
+              onClick={() => setLanguage("uk")}
+            >
+              UA
+            </LangButton>
+          </LangSwitcher>
+        </ButtonsWrapper>
       </TopBar>
 
       <BottomBar>
         <NavButtonContainer>
           <NavButtonGroup>
-            <NavButton onClick={handlePrevMonth} title="Попередній місяць">
+            <NavButton
+              onClick={handlePrevMonth}
+              title={translations.prevMonth}
+            >
               <span>︿</span>
             </NavButton>
-            <NavButton onClick={handleNextMonth} title="Наступний місяць">
+            <NavButton
+              onClick={handleNextMonth}
+              title={translations.nextMonth}
+            >
               <span>﹀</span>
             </NavButton>
           </NavButtonGroup>
@@ -111,10 +146,13 @@ export const Header = ({
                     >
                       <ResultItemTitle>{t.title}</ResultItemTitle>
                       <ResultItemDate>
-                        {new Date(t.date).toLocaleDateString("uk-UA", {
-                          day: "numeric",
-                          month: "short",
-                        })}
+                        {new Date(t.date).toLocaleDateString(
+                          language === "uk" ? "uk-UA" : "en-US",
+                          {
+                            day: "numeric",
+                            month: "short",
+                          },
+                        )}
                       </ResultItemDate>
                     </ResultItem>
                   ))}

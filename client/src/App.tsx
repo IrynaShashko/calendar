@@ -1,14 +1,14 @@
-/** @jsxImportSource @emotion/react */
+import { useCallback, useEffect, useMemo, useState } from "react";
+
 import { Global } from "@emotion/react";
+
 import {
   DragDropContext,
   Draggable,
   Droppable,
   type DropResult,
 } from "@hello-pangea/dnd";
-import { useCallback, useEffect, useMemo, useState } from "react";
 
-import { createTask, deleteTask, getTasks, updateTask } from "./api/taskApi";
 import {
   DayCell,
   DayHeader,
@@ -26,18 +26,18 @@ import { TaskItem } from "./components/TaskItem";
 import { TaskModal } from "./components/TaskModal";
 import { translations } from "./locales/translations.js";
 
+import { createTask, deleteTask, getTasks, updateTask } from "./api/taskApi";
+import { defaultDate, globalStyles } from "./constants/constants.js";
 import { generateCalendarDays, getCardLabel } from "./utils/calendarUtils";
 
+import { useAuth } from "./context/AuthContext.js";
+
+import AuthModal from "./components/AuthModal.js";
+
 import type { TaskType } from "@shared/task.interface.js";
-import type { Holiday, Language } from "./types/calendar.types.js";
-import { defaultDate, globalStyles } from "./constants/constants.js";
+import type { Holiday } from "./types/calendar.types.js";
 
 function App() {
-  const [language, setLanguage] = useState<Language>(() => {
-    const savedLang = localStorage.getItem("lang");
-    return savedLang === "uk" || savedLang === "en" ? savedLang : "en";
-  });
-
   const [viewDate, setViewDate] = useState(defaultDate);
   const [tasks, setTasks] = useState<TaskType[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -49,11 +49,9 @@ function App() {
   const [selectedLabels, setSelectedLabels] = useState<string[]>([]);
   const [isDragging, setIsDragging] = useState(false);
 
-  const weekDays = useMemo(() => translations[language].weekDays, [language]);
+  const { language, user, openAuthModal } = useAuth();
 
-  useEffect(() => {
-    localStorage.setItem("lang", language);
-  }, [language]);
+  const weekDays = useMemo(() => translations[language].weekDays, [language]);
 
   useEffect(() => {
     const fetchHolidays = async () => {
@@ -72,19 +70,25 @@ function App() {
 
   const fetchTasks = useCallback(async () => {
     try {
-      setTasks(await getTasks());
+      if (user) {
+        setTasks(await getTasks());
+      }
     } catch (e) {
       console.error("Error fetching tasks:", e);
     }
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     const load = async () => {
-      await fetchTasks();
+      if (user) {
+        await fetchTasks();
+      } else {
+        setTasks([]);
+      }
     };
 
     load();
-  }, [fetchTasks]);
+  }, [fetchTasks, user]);
 
   const days = useMemo(
     () => generateCalendarDays(viewDate, tasks, holidays, searchQuery),
@@ -114,40 +118,40 @@ function App() {
     }
   };
 
-const onDragEnd = async (result: DropResult) => {
-  const { destination, source, draggableId } = result;
-  setIsDragging(false);
+  const onDragEnd = async (result: DropResult) => {
+    const { destination, source, draggableId } = result;
+    setIsDragging(false);
 
-  if (
-    !destination ||
-    (destination.droppableId === source.droppableId &&
-      destination.index === source.index)
-  ) {
-    return;
-  }
+    if (
+      !destination ||
+      (destination.droppableId === source.droppableId &&
+        destination.index === source.index)
+    ) {
+      return;
+    }
 
-  const newDateString = destination.droppableId;
-  const newIndex = destination.index;
+    const newDateString = destination.droppableId;
+    const newIndex = destination.index;
 
-  setTasks((prevTasks) => {
-    return prevTasks.map((t) => {
-      if (t._id === draggableId) {
-        return { ...t, date: newDateString, order: newIndex };
-      }
-      return t;
+    setTasks((prevTasks) => {
+      return prevTasks.map((t) => {
+        if (t._id === draggableId) {
+          return { ...t, date: newDateString, order: newIndex };
+        }
+        return t;
+      });
     });
-  });
 
-  try {
-    await updateTask(draggableId, {
-      date: new Date(newDateString),
-      order: newIndex,
-    });
-  } catch (error) {
-    console.error("Move error:", error);
-    fetchTasks(); 
-  }
-};
+    try {
+      await updateTask(draggableId, {
+        date: new Date(newDateString),
+        order: newIndex,
+      });
+    } catch (error) {
+      console.error("Move error:", error);
+      fetchTasks();
+    }
+  };
 
   const closeModal = () => {
     setIsModalOpen(false);
@@ -164,7 +168,6 @@ const onDragEnd = async (result: DropResult) => {
           viewDate={viewDate}
           setViewDate={setViewDate}
           language={language}
-          setLanguage={setLanguage}
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
           translations={translations[language]}
@@ -227,8 +230,10 @@ const onDragEnd = async (result: DropResult) => {
                       )}
                     </DayHeaderRow>
                     <TaskScrollContainer>
-                      {day.dayHolidays.map((h) => (
-                        <HolidayLabel key={h.name}>{h.localName}</HolidayLabel>
+                      {day.dayHolidays.map((h, idx) => (
+                        <HolidayLabel key={`${h.name}-${idx}`}>
+                          {h.localName}
+                        </HolidayLabel>
                       ))}
                       {day.dayTasks.map((task, idx) => (
                         <Draggable
@@ -277,7 +282,6 @@ const onDragEnd = async (result: DropResult) => {
           </Grid>
         </DragDropContext>
       </FullScreenContainer>
-
       <TaskModal
         isOpen={isModalOpen}
         onClose={closeModal}
@@ -289,7 +293,13 @@ const onDragEnd = async (result: DropResult) => {
         translations={translations[language]}
         selectedLabels={selectedLabels}
         setSelectedLabels={setSelectedLabels}
+        user={user}
+        onOpenAuth={() => {
+          closeModal();
+          openAuthModal();
+        }}
       />
+      <AuthModal translations={translations[language]} />
     </>
   );
 }

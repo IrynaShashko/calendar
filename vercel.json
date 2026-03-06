@@ -1,32 +1,34 @@
 {
-  "version": 2,
   "builds": [
     {
       "src": "server/src/index.ts",
       "use": "@vercel/node"
     },
     {
+      "config": {
+        "distDir": "dist"
+      },
       "src": "client/package.json",
-      "use": "@vercel/static-build",
-      "config": { "distDir": "dist" }
+      "use": "@vercel/static-build"
     }
   ],
   "rewrites": [
     {
-      "source": "/api-docs/(.*)",
-      "destination": "server/src/index.ts"
+      "destination": "server/src/index.ts",
+      "source": "/api-docs/(.*)"
     },
     {
-      "source": "/api-docs",
-      "destination": "server/src/index.ts"
+      "destination": "server/src/index.ts",
+      "source": "/api-docs"
     },
     {
-      "source": "/api/(.*)",
-      "destination": "server/src/index.ts"
+      "destination": "server/src/index.ts",
+      "source": "/api/(.*)"
     },
     {
-      "source": "/(.*)",
-      "destination": "client/$1"
+      "destination": "client/$1",
+      "source": "/(.*)"
     }
-  ]
+  ],
+  "version": 2
 }
