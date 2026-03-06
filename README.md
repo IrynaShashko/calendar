@@ -4,14 +4,13 @@ A modern, full-stack task management application featuring a highly interactive 
 
 ## ✨ Key Features
 
-* **Interactive Grid**: Dynamic 42-day calendar generation with precise current-month highlighting.
-* **Intuitive Drag-and-Drop**: Seamlessly move tasks between dates using `@hello-pangea/dnd` for an effortless planning experience.
-* **Smart Task Management**: Create, edit, and delete tasks via a sleek modal interface.
-* **Label System**: Color-code your tasks with a strict limit of **4 labels per task** to maintain visual clarity.
-* **Holiday Integration**: Real-time fetching of public holidays (UA/US) via the Nager.Date API based on the selected year and language.
-* **Global Search**: Instant task filtering by title with a "Go to Date" feature for quick navigation.
-* **Localization**: Full support for English and Ukrainian, including complex noun declensions (e.g., "1 card", "2 cards", "5 cards").
-* **Optimistic UI Updates**: Instant interface feedback during drag-and-drop operations, eliminating server-response lag.
+* **Secure Authentication**: Robust JWT-based system using **HttpOnly Cookies** for protection against XSS. 🔐
+* **Live API Documentation**: Integrated **Swagger UI** for real-time API exploration and testing. 📖
+* **Interactive Grid**: Dynamic 42-day calendar with precise current-month highlighting and smooth navigation.
+* **Intuitive Drag-and-Drop**: Effortlessly move tasks between dates using `@hello-pangea/dnd`.
+* **Smart Task Management**: Create, edit, and delete tasks via a sleek modal (restricted to authorized users).
+* **Holiday Integration**: Real-time fetching of public holidays (UA/US) via Nager.Date API.
+* **Optimistic UI**: Instant interface feedback during operations, eliminating server-lag perception.
 
 ## 🛠 Tech Stack
 
@@ -23,9 +22,20 @@ A modern, full-stack task management application featuring a highly interactive 
 
 ### Backend
 * **Node.js / Express**
-* **MongoDB / Mongoose** – To store tasks with specific `order` and `date` parameters.
+* **MongoDB / Mongoose** – Advanced task ordering and user associations.
+* **JWT & Cookie-Parser** – Secure stateless session management.
+* **Swagger UI Express** – Automated OpenAPI 3.0 documentation.
 
 
+
+## 📖 API Documentation
+
+The API is fully documented and can be tested directly from the browser:
+
+* **Production**: [https://calendar-tau-green.vercel.app/api-docs](https://calendar-tau-green.vercel.app/api-docs)
+* **Local**: `http://localhost:5000/api-docs`
+
+---
 
 ## 🚀 Getting Started
 
@@ -50,13 +60,6 @@ You will need to run the **Server** and the **Client** in separate terminal wind
     npm run dev
     ```
 
-## 📂 Project Structure
-
-* `src/components/` — UI components (Header, TaskModal, TaskItem).
-* `src/utils/` — Core logic: date generation, label limits, and localization helpers.
-* `src/constants/` — Project constants: color palettes and global theme styles.
-* `src/types/` — Centralized TypeScript interfaces and definitions.
-* `src/api/` — API service configurations.
-
 ---
+
 Built with ❤️ for better productivity.

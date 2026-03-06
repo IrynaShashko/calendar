@@ -13,6 +13,14 @@
   ],
   "rewrites": [
     {
+      "source": "/api-docs/(.*)",
+      "destination": "server/src/index.ts"
+    },
+    {
+      "source": "/api-docs",
+      "destination": "server/src/index.ts"
+    },
+    {
       "source": "/api/(.*)",
       "destination": "server/src/index.ts"
     },

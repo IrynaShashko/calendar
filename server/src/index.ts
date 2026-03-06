@@ -2,27 +2,64 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
+import swaggerUi from "swagger-ui-express";
+import  {swaggerDocument}  from "./docs/swaggerDocs.js";
+
+import authRoutes from "./routes/authRoutes.js";
 import taskRoutes from "./routes/taskRoutes.js";
 
 dotenv.config();
 
 const app = express();
-app.use(cors());
+
+app.use(
+  cors({
+    origin:
+      process.env.NODE_ENV === "production"
+        ? `${process.env.CLIENT_URL}`
+        : "http://localhost:3000",
+    credentials: true,
+  }),
+);
+
+app.use(cookieParser());
+
 app.use(express.json());
 
-app.use("/api/tasks", taskRoutes); 
+const swaggerOptions = {
+  customCssUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.18.3/swagger-ui.css",
+  customJs: [
+    "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.18.3/swagger-ui-bundle.js",
+    "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.18.3/swagger-ui-standalone-preset.js",
+  ],
+};
+
+app.use(
+  "/api-docs",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerDocument, swaggerOptions),
+);
+
+app.use("/api/auth", authRoutes);
+app.use("/api/tasks", taskRoutes);
+
 const MONGO_URI =
   process.env.MONGO_URI || "mongodb://localhost:27017/calendar-db";
 
 mongoose
   .connect(MONGO_URI)
   .then(() => console.log("✅ MongoDB connected"))
-  .catch((err) => console.error("❌ DB Error:", err));
+  .catch((err) => console.error("DB Error:", err));
 
 if (process.env.NODE_ENV !== "production") {
   const PORT = process.env.PORT || 5000;
   app.listen(PORT, () => {
-    console.log(`🚀 Server running on http://localhost:${PORT}`);
+    console.log(`🚀 Server is running on http://localhost:${PORT}`);
+    console.log(
+      `📄 API Documentation available at http://localhost:${PORT}/api-docs`,
+    );
   });
 }
 

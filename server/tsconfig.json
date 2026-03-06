@@ -9,6 +9,8 @@
     "forceConsistentCasingInFileNames": true,
     "outDir": "./dist",
     "strict": true,
+    "resolveJsonModule": true,
+    "allowJs": true,
     "paths": {
       "@/*": ["src/*"],
       "@shared/*": ["../shared/*"]
