@@ -36,6 +36,25 @@ const swaggerOptions = {
   ],
 };
 
+let isConnected = false;
+
+const connectDB = async () => {
+  if (isConnected) return;
+
+  try {
+    const db = await mongoose.connect(process.env.MONGO_URI!);
+    isConnected = db.connections[0].readyState === 1;
+    console.log("✅ MongoDB connected");
+  } catch (err) {
+    console.error("DB Error:", err);
+  }
+};
+
+app.use(async (req, res, next) => {
+  await connectDB();
+  next();
+});
+
 app.use(
   "/api-docs",
   swaggerUi.serve,
@@ -44,14 +63,6 @@ app.use(
 
 app.use("/api/auth", authRoutes);
 app.use("/api/tasks", taskRoutes);
-
-const MONGO_URI =
-  process.env.MONGO_URI || "mongodb://localhost:27017/calendar-db";
-
-mongoose
-  .connect(MONGO_URI)
-  .then(() => console.log("✅ MongoDB connected"))
-  .catch((err) => console.error("DB Error:", err));
 
 if (process.env.NODE_ENV !== "production") {
   const PORT = process.env.PORT || 5000;
