@@ -17,6 +17,8 @@ import {
   FullScreenContainer,
   Grid,
   HolidayLabel,
+  TaskDot,
+  TaskDotsRow,
   TaskNumber,
   TaskScrollContainer,
 } from "./components/CalendarStyles.js";
@@ -37,6 +39,8 @@ import AuthModal from "./components/AuthModal.js";
 import type { TaskType } from "@shared/task.interface.js";
 import type { Holiday } from "./types/calendar.types.js";
 
+import { useIsMobile } from "./utils/useIsMobile.js";
+
 function App() {
   const [viewDate, setViewDate] = useState(defaultDate);
   const [tasks, setTasks] = useState<TaskType[]>([]);
@@ -48,7 +52,11 @@ function App() {
   const [holidays, setHolidays] = useState<Holiday[]>([]);
   const [selectedLabels, setSelectedLabels] = useState<string[]>([]);
   const [isDragging, setIsDragging] = useState(false);
+  const [taskModalMode, setTaskModalMode] = useState<"form" | "day-tasks">(
+    "form",
+  );
 
+  const isMobile = useIsMobile(768);
   const { language, user, openAuthModal } = useAuth();
 
   const weekDays = useMemo(() => translations[language].weekDays, [language]);
@@ -94,6 +102,47 @@ function App() {
     () => generateCalendarDays(viewDate, tasks, holidays, searchQuery),
     [viewDate, tasks, searchQuery, holidays],
   );
+
+  const selectedDayData = useMemo(() => {
+    if (!selectedDate) return null;
+
+    return (
+      days.find(
+        (day) => day.date.toDateString() === selectedDate.toDateString(),
+      ) ?? null
+    );
+  }, [days, selectedDate]);
+
+  const selectedDayTasks = selectedDayData?.dayTasks ?? [];
+  const selectedDayHolidays = selectedDayData?.dayHolidays ?? [];
+
+  const openDayModal = (
+    date: Date,
+    dayTasks: TaskType[],
+    dayHolidays: Holiday[],
+  ) => {
+    if (isDragging) return;
+
+    setSelectedDate(date);
+    setEditingTask(null);
+    setTaskTitle("");
+    setSelectedLabels([]);
+    setTaskModalMode(
+      isMobile && (dayTasks.length > 0 || dayHolidays.length > 0)
+        ? "day-tasks"
+        : "form",
+    );
+    setIsModalOpen(true);
+  };
+
+  const openTaskEditor = (task: TaskType) => {
+    setEditingTask(task);
+    setTaskTitle(task.title);
+    setSelectedDate(new Date(task.date));
+    setSelectedLabels(task.labels || []);
+    setTaskModalMode("form");
+    setIsModalOpen(true);
+  };
 
   const handleSaveTask = async () => {
     if (!taskTitle || !selectedDate) return;
@@ -158,6 +207,7 @@ function App() {
     setEditingTask(null);
     setTaskTitle("");
     setSelectedLabels([]);
+    setTaskModalMode("form");
   };
 
   return (
@@ -214,65 +264,92 @@ function App() {
                     ref={provided.innerRef}
                     {...provided.droppableProps}
                     isCurrentMonth={day.isCurrentMonth}
-                    onClick={() => {
-                      if (isDragging) return;
-                      setSelectedDate(day.date);
-                      setIsModalOpen(true);
-                    }}
+                    isToday={
+                      day.date.toDateString() === new Date().toDateString()
+                    }
+                    onClick={() =>
+                      openDayModal(day.date, day.dayTasks, day.dayHolidays)
+                    }
                   >
                     <DayHeaderRow>
-                      <DayNumber>{day.date.getDate()}</DayNumber>
-                      {day.dayTasks.length > 0 && (
+                      <DayNumber
+                        isToday={
+                          day.date.toDateString() === new Date().toDateString()
+                        }
+                      >
+                        {day.date.getDate()}
+                      </DayNumber>
+                      {!isMobile && day.dayTasks.length > 0 && (
                         <TaskNumber>
                           {day.dayTasks.length}{" "}
                           {getCardLabel(day.dayTasks.length, language)}
                         </TaskNumber>
                       )}
+                      {isMobile &&
+                        (day.dayTasks.length > 0 ||
+                          day.dayHolidays.length > 0) && (
+                          <TaskDotsRow
+                            aria-label={`${day.dayTasks.length} tasks${day.dayHolidays.length ? ` and ${day.dayHolidays.length} holidays` : ""}`}
+                          >
+                            {day.dayTasks.slice(0, 2).map((task, idx) => (
+                              <TaskDot
+                                key={task._id || `${task.title}-${idx}`}
+                                color={task.labels?.[0]}
+                              />
+                            ))}
+                            {day.dayHolidays.length > 0 && (
+                              <TaskDot color="#d1242f" />
+                            )}
+                            {day.dayTasks.length > 2 && (
+                              <TaskNumber>
+                                +{day.dayTasks.length - 2}
+                              </TaskNumber>
+                            )}
+                          </TaskDotsRow>
+                        )}
                     </DayHeaderRow>
                     <TaskScrollContainer>
-                      {day.dayHolidays.map((h, idx) => (
-                        <HolidayLabel key={`${h.name}-${idx}`}>
-                          {h.localName}
-                        </HolidayLabel>
-                      ))}
-                      {day.dayTasks.map((task, idx) => (
-                        <Draggable
-                          key={task._id}
-                          draggableId={task._id!}
-                          index={idx}
-                        >
-                          {(prov) => (
-                            <div
-                              ref={prov.innerRef}
-                              {...prov.draggableProps}
-                              {...prov.dragHandleProps}
-                            >
-                              <TaskItem
-                                task={task}
-                                onDelete={async (e, id) => {
-                                  e.stopPropagation();
-                                  if (
-                                    window.confirm(
-                                      translations[language].confirmDelete,
-                                    )
-                                  ) {
-                                    await deleteTask(id);
-                                    fetchTasks();
-                                  }
-                                }}
-                                onEdit={(e, t) => {
-                                  e.stopPropagation();
-                                  setEditingTask(t);
-                                  setTaskTitle(t.title);
-                                  setSelectedDate(new Date(t.date));
-                                  setSelectedLabels(t.labels || []);
-                                  setIsModalOpen(true);
-                                }}
-                              />
-                            </div>
-                          )}
-                        </Draggable>
-                      ))}
+                      {!isMobile &&
+                        day.dayHolidays.map((h, idx) => (
+                          <HolidayLabel key={`${h.name}-${idx}`}>
+                            {h.localName}
+                          </HolidayLabel>
+                        ))}
+                      {!isMobile &&
+                        day.dayTasks.map((task, idx) => (
+                          <Draggable
+                            key={task._id}
+                            draggableId={task._id!}
+                            index={idx}
+                          >
+                            {(prov) => (
+                              <div
+                                ref={prov.innerRef}
+                                {...prov.draggableProps}
+                                {...prov.dragHandleProps}
+                              >
+                                <TaskItem
+                                  task={task}
+                                  onDelete={async (e, id) => {
+                                    e.stopPropagation();
+                                    if (
+                                      window.confirm(
+                                        translations[language].confirmDelete,
+                                      )
+                                    ) {
+                                      await deleteTask(id);
+                                      await fetchTasks();
+                                    }
+                                  }}
+                                  onEdit={(e, t) => {
+                                    e.stopPropagation();
+                                    openTaskEditor(t);
+                                  }}
+                                />
+                              </div>
+                            )}
+                          </Draggable>
+                        ))}
                       {provided.placeholder}
                     </TaskScrollContainer>
                   </DayCell>
@@ -297,6 +374,24 @@ function App() {
         onOpenAuth={() => {
           closeModal();
           openAuthModal();
+        }}
+        mode={taskModalMode}
+        dayTasks={taskModalMode === "day-tasks" ? selectedDayTasks : undefined}
+        dayHolidays={
+          taskModalMode === "day-tasks" ? selectedDayHolidays : undefined
+        }
+        onAddNew={() => {
+          setTaskModalMode("form");
+          setEditingTask(null);
+          setTaskTitle("");
+          setSelectedLabels([]);
+        }}
+        onEditTask={(task) => openTaskEditor(task)}
+        onDeleteTask={async (taskId) => {
+          if (window.confirm(translations[language].confirmDelete)) {
+            await deleteTask(taskId);
+            await fetchTasks();
+          }
         }}
       />
       <AuthModal translations={translations[language]} />

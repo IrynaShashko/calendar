@@ -54,6 +54,12 @@ export interface TaskModalProps {
   setSelectedLabels: (labels: string[]) => void;
   user: AuthUser | null;
   onOpenAuth: () => void;
+  dayTasks?: TaskType[];
+  dayHolidays?: Holiday[];
+  mode?: "form" | "day-tasks";
+  onAddNew?: () => void;
+  onEditTask?: (task: TaskType) => void;
+  onDeleteTask?: (taskId: string) => void | Promise<void>;
 }
 
 export interface Holiday {

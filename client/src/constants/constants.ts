@@ -19,6 +19,7 @@ export const globalStyles = css`
     padding: 0;
     height: 100%;
     width: 100%;
+    overflow: hidden;
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     background-color: #ebedf0;
   }
@@ -29,4 +30,4 @@ export const globalStyles = css`
   }
 `;
 
-export const defaultDate = new Date(2026, 2, 1);
+export const defaultDate = new Date();
