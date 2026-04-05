@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 
-import headerBg from "../assets/background.jpg";
+import headerBg from "../assets/background.png";
 
 export const FullScreenContainer = styled.div`
   display: flex;
@@ -9,6 +9,7 @@ export const FullScreenContainer = styled.div`
   min-height: 100dvh;
   width: 100%;
   overflow: hidden;
+  gap: 0;
   background:
     radial-gradient(
       circle at top left,
@@ -16,95 +17,12 @@ export const FullScreenContainer = styled.div`
       transparent 26%
     ),
     linear-gradient(180deg, #f9fbff 0%, #eef2f7 100%);
-`;
-
-export const UserContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  flex-wrap: wrap;
-  gap: 8px;
-`;
-
-export const UserName = styled.span`
-  font-size: 14px;
-  font-weight: 600;
-  color: #fff;
-  max-width: 250px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  background: rgba(255, 255, 255, 0.14);
-  padding: 4px 10px;
-  border-radius: 999px;
-
-  @media (max-width: 768px) {
-    max-width: 180px;
-    font-size: 13px;
-  }
-`;
-
-export const ButtonsWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 10px;
-
-  @media (max-width: 768px) {
-    width: 100%;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-`;
-
-export const NavigationContainer = styled.nav`
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
+  padding: 12px;
   gap: 12px;
-  flex-wrap: wrap;
-`;
 
-export const LoginButton = styled.button`
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  background: rgba(255, 255, 255, 0.18);
-  border: 1px solid rgba(255, 255, 255, 0.24);
-  color: #fff;
-  font-size: 12px;
-  cursor: pointer;
-  padding: 6px 10px;
-  border-radius: 999px;
-  transition: all 0.2s ease;
-  font-weight: 700;
-  text-transform: uppercase;
-  backdrop-filter: blur(8px);
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.3);
-  }
-`;
-
-export const LogoutButton = styled.button`
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  background: rgba(255, 255, 255, 0.26);
-  color: white;
-  font-size: 12px;
-  cursor: pointer;
-  padding: 6px 10px;
-  border-radius: 999px;
-  transition: all 0.2s ease;
-  border: none;
-  text-transform: uppercase;
-  font-weight: 700;
-  backdrop-filter: blur(8px);
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.38);
+  @media (min-width: 1024px) {
+    flex-direction: row-reverse;
+    align-items: stretch;
   }
 `;
 
@@ -127,7 +45,7 @@ export const AuthCard = styled.div`
   max-width: 500px;
   background: #e8e8e8;
   padding: 0px 25px;
-  border-radius: 6px;
+  border-radius: 18px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
   border: 1px solid rgba(255, 255, 255, 0.1);
   position: relative;
@@ -138,14 +56,23 @@ export const CloseButton = styled.button`
   position: absolute;
   top: 25px;
   right: 25px;
-  padding: 5px;
+  /* width: 36px;
+  height: 36px; */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  /* background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(209, 57, 0, 0.12); */
+  /* border-radius: 50%; */
   background: none;
   border: none;
-  color: #d13900;
-  font-size: 30px;
+  box-shadow: none;
+  color: #53535395;
   cursor: pointer;
+
   &:hover {
-    color: #b12f00;
+    color: #535353b6;
   }
 `;
 
@@ -154,13 +81,15 @@ export const Title = styled.h2`
   font-size: 26px;
   margin-bottom: 24px;
   font-weight: 700;
-  color: #d13900;
+  color: #c08497;
 `;
 
 export const InputGroup = styled.div`
   margin-bottom: 18px;
   label {
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: 6px;
     margin-bottom: 6px;
     font-size: 13px;
     font-weight: 600;
@@ -177,7 +106,7 @@ export const InputGroup = styled.div`
     outline: none;
     transition: all 0.2s;
     &:focus {
-      border-color: #d13900;
+      border-color: #a36a7e;
       background: rgba(255, 255, 255, 0.08);
     }
     &::placeholder {
@@ -206,8 +135,12 @@ export const ErrorMessage = styled.div`
 
 export const SubmitButton = styled.button`
   width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   padding: 14px;
-  background: #d13900;
+  background: #c08497;
   color: white;
   border: none;
   border-radius: 6px;
@@ -216,8 +149,9 @@ export const SubmitButton = styled.button`
   cursor: pointer;
   transition: all 0.2s;
   margin-top: 10px;
+  border-radius: 28px;
   &:hover {
-    background: #b12f00;
+    background: #a36a7e;
     transform: translateY(-1px);
   }
   &:disabled {
@@ -232,7 +166,7 @@ export const SwitchText = styled.p`
   font-size: 14px;
   color: #888;
   span {
-    color: #d13900;
+    color: #c08497;
     cursor: pointer;
     font-weight: 600;
     margin-left: 6px;
@@ -242,91 +176,8 @@ export const SwitchText = styled.p`
   }
 `;
 
-export const HeaderWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  flex-shrink: 0;
-`;
-
-export const TopBar = styled.div`
-  min-height: 60px;
-  padding: 10px 14px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  color: white;
-  background-image: url(${headerBg});
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-blend-mode: overlay;
-  background-color: rgba(91, 36, 0, 0.28);
-  box-shadow: 0 10px 24px rgba(80, 38, 0, 0.18);
-
-  @media (max-width: 768px) {
-    flex-wrap: wrap;
-    align-items: flex-start;
-    gap: 10px;
-  }
-`;
-
-export const LangSwitcher = styled.div`
-  display: flex;
-  gap: 4px;
-  background: rgba(255, 255, 255, 0.18);
-  padding: 3px;
-  border-radius: 999px;
-  margin-left: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  backdrop-filter: blur(8px);
-`;
-
-export const LangButton = styled.button<{ active: boolean }>`
-  background: ${(props) => (props.active ? "white" : "transparent")};
-  color: ${(props) => (props.active ? "#ff9f1a" : "white")};
-  border: none;
-  border-radius: 6px;
-  padding: 2px 6px;
-  font-size: 12px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.2s;
-
-  &:hover {
-    background: ${(props) =>
-      props.active ? "white" : "rgba(255, 255, 255, 0.1)"};
-  }
-`;
-
-export const BottomBar = styled.div`
-  background: rgba(255, 255, 255, 0.84);
-  backdrop-filter: blur(12px);
-  min-height: 56px;
-  padding: 8px 12px;
-  display: grid;
-  grid-template-columns: auto 1fr minmax(220px, 300px);
-  align-items: center;
-  gap: 10px;
-  border-bottom: 1px solid rgba(15, 23, 42, 0.06);
-
-  @media (max-width: 768px) {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-`;
-
-export const CenterTitle = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-width: 0;
-`;
-
 export const HeaderContainer = styled.div`
-  background: linear-gradient(135deg, #ff9f1a 0%, #ffb142 100%);
+  background: linear-gradient(135deg, #c08497 0%, #a36a7e 100%);
   height: 48px;
   padding: 0 12px;
   display: flex;
@@ -336,94 +187,6 @@ export const HeaderContainer = styled.div`
   font-family:
     -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-`;
-
-export const HeaderBrand = styled.div`
-  font-weight: bold;
-  font-size: 18px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: white;
-  opacity: 1;
-  cursor: pointer;
-  padding: 4px 6px;
-  border-radius: 12px;
-  background: rgba(0, 0, 0, 0.12);
-
-  &:hover {
-    opacity: 1;
-  }
-`;
-
-export const HeaderButton = styled.button`
-  background: transparent;
-  border: none;
-  border-radius: 6px;
-  color: #4d4d4d;
-  padding: 6px 12px;
-  font-size: 18px;
-  font-weight: bold;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  transition: background 0.2s;
-  text-transform: capitalize;
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.3);
-  }
-
-  @media (max-width: 768px) {
-    font-size: 15px;
-    padding: 4px 8px;
-  }
-`;
-
-export const HeaderIcon = styled.span`
-  font-size: 20px;
-`;
-
-export const HeaderTitle = styled.span`
-  font-weight: bold;
-  font-size: 18px;
-  margin-left: 6px;
-`;
-
-export const NavButtonContainer = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-export const NavButtonGroup = styled.div`
-  display: flex;
-  gap: 2px;
-  margin-right: 12px;
-`;
-
-export const NavButton = styled.button`
-  background: #ebecf0;
-  border: 1px solid #dfe1e6;
-  border-radius: 6px;
-  width: 32px;
-  height: 26px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-transform: capitalize;
-  cursor: pointer;
-  color: #a8a8a8;
-  span {
-    font-size: 18px;
-    line-height: 0;
-    display: block;
-  }
-
-  &:hover {
-    background: #e4e5e8;
-    border-color: #dfe1e6;
-  }
 `;
 
 export const MonthTitle = styled.div`
@@ -440,9 +203,12 @@ export const Grid = styled.div`
   grid-template-rows: 32px repeat(6, minmax(0, 1fr));
   flex: 1 1 auto;
   min-height: 0;
+  min-width: 0;
   gap: 4px;
-  padding: 4px;
-  background: transparent;
+  padding: 10px;
+  background: rgba(255, 252, 247, 0.82);
+  border-radius: 24px;
+  box-shadow: 0 18px 36px rgba(15, 23, 42, 0.08);
   width: 100%;
   height: 100%;
   overflow: hidden;
@@ -450,7 +216,8 @@ export const Grid = styled.div`
   @media (max-width: 768px) {
     grid-template-rows: 26px repeat(6, minmax(0, 1fr));
     gap: 2px;
-    padding: 2px;
+    padding: 6px 4px 4px;
+    border-radius: 18px;
   }
 `;
 
@@ -467,7 +234,6 @@ export const DayHeader = styled.div`
     font-size: 12px;
   }
 `;
-
 export const DayCell = styled.div<{
   isCurrentMonth?: boolean;
   isToday?: boolean;
@@ -476,7 +242,7 @@ export const DayCell = styled.div<{
     props.isCurrentMonth === false
       ? "linear-gradient(180deg, #ececec 0%, #e7e7e7 100%)"
       : props.isToday
-        ? "linear-gradient(180deg, #fff3dd 0%, #ffe4b5 100%)"
+        ? "linear-gradient(180deg, #fcf5f7 0%, #f4e8eb 100%)" /* Ніжний рожевий фон для активного дня */
         : "linear-gradient(180deg, #e8ecef 0%, #e2e7ea 100%)"};
   padding: 8px 6px 6px 8px;
   display: flex;
@@ -488,10 +254,12 @@ export const DayCell = styled.div<{
   border-radius: 10px;
   cursor: pointer;
   border: ${(props) =>
-    props.isToday ? "1px solid #ff9f1a" : "1px solid rgba(255, 255, 255, 0.7)"};
+    props.isToday
+      ? "1px solid #C08497"
+      : "1px solid rgba(255, 255, 255, 0.7)"}; /* Ваш акцентний колір */
   box-shadow: ${(props) =>
     props.isToday
-      ? "0 0 0 2px rgba(255, 159, 26, 0.18), inset 0 1px 0 rgba(255,255,255,0.5)"
+      ? "0 0 0 2px rgba(192, 132, 151, 0.25), inset 0 1px 0 rgba(255,255,255,0.7)" /* Світіння акцентним кольором */
       : "inset 0 1px 0 rgba(255, 255, 255, 0.5)"};
   transition:
     transform 0.15s ease,
@@ -510,6 +278,48 @@ export const DayCell = styled.div<{
     border-radius: 6px;
   }
 `;
+// export const DayCell = styled.div<{
+//   isCurrentMonth?: boolean;
+//   isToday?: boolean;
+// }>`
+//   background: ${(props) =>
+//     props.isCurrentMonth === false
+//       ? "linear-gradient(180deg, #ececec 0%, #e7e7e7 100%)"
+//       : props.isToday
+//         ? "linear-gradient(180deg, #fff3dd 0%, #ffe4b5 100%)"
+//         : "linear-gradient(180deg, #e8ecef 0%, #e2e7ea 100%)"};
+//   padding: 8px 6px 6px 8px;
+//   display: flex;
+//   flex-direction: column;
+//   height: 100%;
+//   min-height: 0;
+//   overflow: hidden;
+//   position: relative;
+//   border-radius: 10px;
+//   cursor: pointer;
+//   border: ${(props) =>
+//     props.isToday ? "1px solid #ff9f1a" : "1px solid rgba(255, 255, 255, 0.7)"};
+//   box-shadow: ${(props) =>
+//     props.isToday
+//       ? "0 0 0 2px rgba(255, 159, 26, 0.18), inset 0 1px 0 rgba(255,255,255,0.5)"
+//       : "inset 0 1px 0 rgba(255, 255, 255, 0.5)"};
+//   transition:
+//     transform 0.15s ease,
+//     box-shadow 0.15s ease,
+//     background-color 0.15s ease;
+
+//   &:hover {
+//     transform: translateY(-1px);
+//     box-shadow:
+//       0 8px 18px rgba(15, 23, 42, 0.06),
+//       inset 0 1px 0 rgba(255, 255, 255, 0.7);
+//   }
+
+//   @media (max-width: 768px) {
+//     padding: 6px 4px;
+//     border-radius: 6px;
+//   }
+// `;
 
 export const TaskScrollContainer = styled.div`
   flex-grow: 1;
@@ -543,14 +353,10 @@ export const DayHeaderRow = styled.div`
 `;
 
 export const DayNumber = styled.span<{ isToday?: boolean }>`
-  font-weight: 700;
+  font-weight: ${(props) => (props.isToday ? "800" : "700")};
   font-size: 12px;
-  color: ${(props) => (props.isToday ? "#9a4b00" : "#4d4d4d")};
+  color: ${(props) => (props.isToday ? "#A36A7E" : "#4d4d4d")};
   margin-bottom: 4px;
-  background: ${(props) =>
-    props.isToday ? "rgba(255,255,255,0.82)" : "transparent"};
-  border-radius: 999px;
-  padding: ${(props) => (props.isToday ? "1px 6px" : "0")};
 `;
 
 export const LabelContainer = styled.div`
@@ -577,37 +383,25 @@ export const LabelsWrapper = styled.div`
 `;
 
 export const LabelBarContainer = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 3px;
-  margin-bottom: 4px;
-  width: calc(100% - 20px);
-  min-width: 0;
+  width: 100%;
+  height: 8px;
+  margin-bottom: 0;
+  border-radius: 8px 8px 0 0;
   overflow: hidden;
-  flex-wrap: nowrap;
-
-  @media (max-width: 900px) {
-    gap: 2px;
-    margin-bottom: 3px;
-    width: calc(100% - 18px);
-  }
 `;
 
 export const LabelBar = styled.div<{ color: string }>`
+  width: 100%;
   height: 8px;
-  flex: 0 0 calc((100% - 9px) / 4);
-  width: calc((100% - 9px) / 4);
-  min-width: 0;
-  max-width: calc((100% - 9px) / 4);
-  border-radius: 999px;
   background-color: ${(props) => props.color};
-
+  border-radius: 8px 8px 0 0;
+  transition: filter 0.2s;
   &:hover {
     filter: brightness(90%);
   }
-
   @media (max-width: 900px) {
     height: 6px;
+    border-radius: 6px 6px 0 0;
   }
 `;
 
@@ -627,6 +421,14 @@ export const LabelsGrid = styled.div`
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
+`;
+
+export const TaskWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 8px 10px 8px;
+  width: 100%;
 `;
 
 export const LabelPill = styled.div<{ color: string; isSelected: boolean }>`
@@ -678,7 +480,6 @@ export const TaskCard = styled.div`
   background: white;
   border-radius: 8px;
   box-shadow: 0 1px 0 rgba(9, 30, 66, 0.2);
-  padding: 6px 24px 6px 8px;
   font-size: 13px;
   color: #172b4d;
   cursor: pointer;
@@ -755,10 +556,10 @@ export const TaskNumber = styled.span`
 `;
 
 export const TaskDotsRow = styled.div`
-  display: inline-flex;
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 4px;
-  margin-left: auto;
 `;
 
 export const TaskDot = styled.span<{ color?: string }>`
@@ -766,16 +567,16 @@ export const TaskDot = styled.span<{ color?: string }>`
   height: 8px;
   border-radius: 50%;
   background: ${(props) =>
-    props.color || "linear-gradient(135deg, #ff8a00 0%, #ff5e62 100%)"};
+    props.color || "linear-gradient(135deg, #e1dfdf 0%, #b4b2b2 100%)"};
   box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.85);
   flex-shrink: 0;
 `;
 
 export const HolidayLabel = styled.div`
-  background: #fff0f0;
-  color: #c62828;
+  background: #f8e0e0;
+  color: #b86c6d;
   box-shadow: 0 1px 0 rgba(238, 156, 148, 0.22);
-  border: 1px solid #ffc8c8;
+  border: 1px solid #b86c6d;
   border-radius: 8px;
   padding: 4px 6px;
   font-size: 12px;
@@ -783,8 +584,11 @@ export const HolidayLabel = styled.div`
   cursor: default;
   overflow: hidden;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 6;
   -webkit-box-orient: vertical;
+  flex: 0 0 auto;
+  min-height: fit-content;
+  word-break: break-word;
 
   @media (max-width: 768px) {
     font-size: 10px;
@@ -798,7 +602,7 @@ export const ModalOverlay = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.64);
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -818,8 +622,12 @@ export const ModalContent = styled.div`
 `;
 
 export const Button = styled.button`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   padding: 8px 14px;
-  background: linear-gradient(135deg, #5aac44 0%, #4e9b3d 100%);
+  background: linear-gradient(135deg, #c08497 0%, #a36a7e 100%);
   color: white;
   border: none;
   border-radius: 10px;
@@ -831,70 +639,7 @@ export const Button = styled.button`
 
   &:hover {
     transform: translateY(-1px);
-    box-shadow: 0 8px 16px rgba(90, 172, 68, 0.18);
-  }
-`;
-
-export const SearchWrapper = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  width: 100%;
-
-  @media (min-width: 769px) {
-    max-width: 300px;
-    margin-left: auto;
-  }
-`;
-
-export const SearchContainer = styled.div`
-  position: relative;
-  display: flex;
-  align-items: center;
-
-  @media (max-width: 768px) {
-    width: 100%;
-  }
-`;
-
-export const SearchInputWrapper = styled.div`
-  position: relative;
-  display: flex;
-  align-items: center;
-
-  &::before {
-    content: "🔍";
-    position: absolute;
-    left: 8px;
-    font-size: 12px;
-    opacity: 0.7;
-    pointer-events: none;
-    filter: grayscale(1) brightness(2);
-  }
-
-  @media (max-width: 768px) {
-    width: 100%;
-  }
-`;
-
-export const Input = styled.input`
-  background: rgba(255, 255, 255, 0.82);
-  border: 1px solid #bbb4b7;
-  border-radius: 8px;
-  padding: 6px 8px 6px 28px;
-  font-size: 14px;
-  width: 100%;
-  min-width: 0;
-  transition:
-    width 0.2s,
-    background 0.2s;
-
-  &::placeholder {
-    color: rgb(208, 208, 208);
-  }
-
-  &:focus {
-    outline: none;
-    background: white;
+    box-shadow: 0 8px 16px rgba(192, 132, 151, 0.18);
   }
 `;
 
@@ -929,59 +674,446 @@ export const TextArea = styled.textarea`
   }
 `;
 
-export const SearchResults = styled.div`
-  position: absolute;
-  top: 110%;
-  right: 0;
-  width: 100%;
-  background: white;
-  border-radius: 6px;
-  box-shadow:
-    0 8px 16px -4px rgba(9, 30, 66, 0.25),
-    0 0 0 1px rgba(9, 30, 66, 0.08);
-  z-index: 1000;
-  max-height: 400px;
-  overflow-y: auto;
-`;
-
-export const ResultItem = styled.div`
-  padding: 8px 12px;
-  cursor: pointer;
-  border-bottom: 1px solid #ebecf0;
+export const HeaderWrapper = styled.header`
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  width: 100%;
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  gap: 14px;
+  padding: 12px;
+  overflow: hidden;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(17, 24, 39, 0.44) 0%,
+      rgba(17, 24, 39, 0.74) 100%
+    ),
+    url(${headerBg});
+  background-size: cover;
+  background-position: center;
+  border-radius: 0 0 24px 24px;
+  box-shadow: 0 18px 44px rgba(15, 23, 42, 0.16);
 
-  &:last-child {
-    border: none;
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(15, 23, 42, 0.18) 0%,
+      rgba(15, 23, 42, 0.48) 100%
+    );
+    z-index: 0;
+  }
+
+  > * {
+    position: relative;
+    z-index: 1;
+  }
+  border-radius: 18px;
+  @media (min-width: 1024px) {
+    top: 12px;
+    width: min(390px, 20vw);
+    min-width: 320px;
+    max-width: 410px;
+    min-height: calc(100dvh - 24px);
+
+    padding: 18px;
+  }
+
+  @media (max-width: 768px) {
+    padding: 12px;
+    gap: 12px;
+  }
+`;
+
+export const TopBar = styled.div`
+  min-height: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: stretch;
+  position: relative;
+  background: transparent;
+  box-shadow: none;
+`;
+
+export const HeaderBrand = styled.div`
+  display: flex;
+  justify-content: space-between;
+  /* align-items: center; */
+  gap: 12px;
+  /* width: 100%;
+  max-width: 100%; */
+  padding: 12px 14px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18);
+
+  @media (max-width: 768px) {
+    gap: 30px;
+  }
+`;
+
+export const HeaderIcon = styled.span`
+  width: 42px;
+  height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  color: #fff;
+  background: linear-gradient(135deg, #ffb347 0%, #ff8a00 100%);
+  box-shadow: 0 8px 18px rgba(255, 138, 0, 0.3);
+  flex-shrink: 0;
+`;
+
+export const HeaderTitle = styled.span`
+  font-family: "Playfair Display", Georgia, serif;
+  font-weight: 700;
+  font-size: clamp(20px, 2vw, 26px);
+  letter-spacing: 0.02em;
+  color: #fffaf2;
+`;
+
+export const ButtonsWrapper = styled.div`
+  grid-area: controls;
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  justify-content: space-between;
+  /* align-items: stretch; */
+  /* justify-content: flex-start; */
+  gap: 12px;
+`;
+
+export const NavigationContainer = styled.nav`
+  display: flex;
+  align-items: center;
+  /* width: 100%; */
+`;
+
+export const UserContainer = styled.div`
+  display: flex;
+  /* align-items: center; */
+  /* justify-content: space-between; */
+  gap: 10px;
+  /* flex-wrap: wrap; */
+  /* width: 100%; */
+`;
+
+export const UserName = styled.span`
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #f8fafc;
+  font-size: 14px;
+  font-weight: 600;
+  max-width: min(100%, 240px);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
+const BaseButton = styled.button`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+`;
+
+export const LoginButton = styled(BaseButton)`
+  background: rgba(255, 255, 255, 0.12);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(8px);
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.18);
+    border-color: rgba(255, 255, 255, 0.28);
+  }
+`;
+
+export const LogoutButton = styled(BaseButton)`
+  background: rgba(255, 255, 255, 0.12);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(8px);
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.18);
+    border-color: rgba(255, 255, 255, 0.28);
+  }
+`;
+
+export const LangSwitcher = styled.div`
+  display: flex;
+  /* align-items: center; */
+  /* justify-content: flex-start; */
+  /* width: 100%; */
+  background: rgba(11, 18, 32, 0.28);
+  padding: 4px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+`;
+
+export const LangButton = styled.button<{ active: boolean }>`
+  background: ${(props) => (props.active ? "white" : "transparent")};
+  color: ${(props) => (props.active ? "#0f172a" : "white")};
+  border: none;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: ${(props) =>
+    props.active ? "0 2px 8px rgba(15, 23, 42, 0.12)" : "none"};
+
+  &:hover {
+    background: ${(props) =>
+      props.active ? "white" : "rgba(255, 255, 255, 0.1)"};
+  }
+`;
+
+export const BottomBar = styled.div`
+  background: transparent;
+  min-height: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 12px;
+  /* width: 100%;
+  max-width: 100%; */
+  padding: 12px 14px;
+  border-radius: 20px;
+  box-shadow: none;
+  margin-top: auto;
+  background: rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18);
+`;
+
+export const NavButtonContainer = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
+`;
+
+export const NavButtonGroup = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+export const NavButton = styled.button`
+  background: none;
+  border: none;
+  box-shadow: none;
+  /* width: 50px;
+  height: 50px; */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #fff;
+  transition: all 0.2s ease;
+
+  svg {
+    color: #fff;
   }
 
   &:hover {
-    background: #f4f5f7;
+    background: none;
+    color: #fff;
+    transform: translateY(-1px);
   }
 `;
 
-export const ResultItemTitle = styled.span`
-  font-weight: 600;
-  color: #172b4d;
-  font-size: 14px;
-`;
-
-export const ResultItemDate = styled.span`
-  font-size: 11px;
-  color: #5e6c84;
+export const CenterTitle = styled.div`
+  display: flex;
+  justify-content: center;
+  flex: 1;
+  min-width: 0;
+  order: 1;
+  width: 100%;
 `;
 
 export const DatePickerWrapper = styled.div`
   position: relative;
   display: flex;
   align-items: center;
+  min-width: 0;
+`;
+
+export const HeaderButton = styled.button`
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  width: 100%;
+  font-family: "Playfair Display", Georgia, serif;
+  font-weight: 700;
+  text-transform: capitalize;
+  cursor: pointer;
+  padding: 0;
+  background: none;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  transition: none;
+  color: #efeeee;
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+  }
 `;
 
 export const HiddenInput = styled.input`
   position: absolute;
-  opacity: 0;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
+  opacity: 0;
   cursor: pointer;
+
+  ::-webkit-calendar-picker-indicator {
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+  }
+`;
+
+export const SearchWrapper = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+  order: 3;
+`;
+
+export const SearchContainer = styled.div`
+  position: relative;
+  width: 100%;
+  max-width: 320px;
+
+  @media (max-width: 768px) {
+    max-width: 100%;
+  }
+`;
+
+export const SearchInputWrapper = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+
+  svg {
+    position: absolute;
+    left: 12px;
+    color: #94a3b8;
+    pointer-events: none;
+    z-index: 1;
+  }
+`;
+
+export const Input = styled.input`
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid transparent;
+  border-radius: 999px;
+  padding: 10px 16px 10px 38px;
+  font-size: 14px;
+  width: 100%;
+  color: #0f172a;
+  transition: all 0.2s ease;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
+
+  &::placeholder {
+    color: #94a3b8;
+  }
+
+  &:focus {
+    outline: none;
+    background: white;
+    border-color: #ff9f1a;
+    box-shadow: 0 0 0 4px rgba(255, 159, 26, 0.1);
+  }
+`;
+
+export const SearchResults = styled.div`
+  position: absolute;
+  bottom: calc(100% + 8px);
+  right: 0;
+  width: 100%;
+  min-width: 0;
+  background: white;
+  border-radius: 16px;
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.1),
+    0 1px 3px rgba(0, 0, 0, 0.05);
+  z-index: 1000;
+  max-height: 350px;
+  overflow-y: auto;
+  border: 1px solid #e2e8f0;
+  padding: 8px 0;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+  }
+`;
+
+export const ResultItem = styled.div`
+  padding: 12px 16px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border-left: 3px solid transparent;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: #f8fafc;
+    border-left-color: #ff9f1a;
+  }
+`;
+
+export const ResultItemTitle = styled.span`
+  font-weight: 600;
+  color: #1e293b;
+  font-size: 14px;
+  line-height: 1.4;
+`;
+
+export const ResultItemDate = styled.span`
+  font-size: 12px;
+  color: #64748b;
+  font-weight: 500;
 `;

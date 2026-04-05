@@ -1,5 +1,7 @@
 import { useState, type FC } from "react";
 
+import { LockKeyhole, LogIn, Mail, User, UserPlus, X } from "lucide-react";
+
 import { loginUser, registerUser } from "../api/authApi";
 import { useAuth } from "../context/AuthContext";
 
@@ -97,7 +99,9 @@ const AuthModal: FC<AuthModalType> = ({ translations }) => {
   return (
     <Overlay onClick={closeAuthModal}>
       <AuthCard onClick={(e) => e.stopPropagation()}>
-        <CloseButton onClick={closeAuthModal}>&times;</CloseButton>
+        <CloseButton type="button" onClick={closeAuthModal}>
+          <X size={24} />
+        </CloseButton>
 
         <Title>
           {isLogin ? translations.loginTitle : translations.registerTitle}
@@ -106,7 +110,10 @@ const AuthModal: FC<AuthModalType> = ({ translations }) => {
         <form onSubmit={handleSubmit}>
           {!isLogin && (
             <InputGroup>
-              <label>{translations.nameLabel}</label>
+              <label>
+                <User size={14} />
+                {translations.nameLabel}
+              </label>
               <input
                 type="text"
                 value={formData.name}
@@ -119,7 +126,10 @@ const AuthModal: FC<AuthModalType> = ({ translations }) => {
           )}
 
           <InputGroup>
-            <label>{translations.emailLabel}</label>
+            <label>
+              <Mail size={14} />
+              {translations.emailLabel}
+            </label>
             <input
               type="email"
               value={formData.email}
@@ -131,7 +141,10 @@ const AuthModal: FC<AuthModalType> = ({ translations }) => {
           </InputGroup>
 
           <InputGroup>
-            <label>{translations.passwordLabel}</label>
+            <label>
+              <LockKeyhole size={14} />
+              {translations.passwordLabel}
+            </label>
             <PasswordWrapper>
               <input
                 type="password"
@@ -147,6 +160,11 @@ const AuthModal: FC<AuthModalType> = ({ translations }) => {
           {error && <ErrorMessage>{error}</ErrorMessage>}
 
           <SubmitButton type="submit" disabled={loading}>
+            {loading ? null : isLogin ? (
+              <LogIn size={16} />
+            ) : (
+              <UserPlus size={16} />
+            )}
             {loading
               ? isLogin
                 ? translations.loadingSignIn

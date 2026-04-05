@@ -1,3 +1,13 @@
+import {
+  CalendarDays,
+  LogIn,
+  PartyPopper,
+  Plus,
+  Save,
+  Trash2,
+  X,
+} from "lucide-react";
+
 import { labelPalette } from "src/constants/constants.js";
 
 import {
@@ -41,7 +51,7 @@ export const TaskModal = ({
 }: TaskModalProps) => {
   if (!isOpen) return null;
 
-  const MAX_LABELS = 4;
+  const MAX_LABELS = 1;
 
   const toggleLabel = (color: string) => {
     const isAlreadySelected = selectedLabels.includes(color);
@@ -69,10 +79,24 @@ export const TaskModal = ({
     language === "uk"
       ? "На цей день ще немає задач, але можна додати нову нижче"
       : "No tasks for this day yet, but you can add one below";
+  // Ukrainian pluralization for tasks and holidays
+  const getUkrainianTaskLabel = (count: number) => {
+    if (count === 1) return "завдання";
+    if ([2, 3, 4].includes(count % 10) && ![12, 13, 14].includes(count % 100))
+      return "завдання";
+    return "завдань";
+  };
+  const getUkrainianHolidayLabel = (count: number) => {
+    if (count === 1) return "свято";
+    if ([2, 3, 4].includes(count % 10) && ![12, 13, 14].includes(count % 100))
+      return "свята";
+    return "свят";
+  };
+
   const tasksCountLabel =
     language === "uk"
-      ? `${dayTasks.length} задач${dayHolidays.length ? ` • ${dayHolidays.length} свят` : ""}`
-      : `${dayTasks.length} tasks${dayHolidays.length ? ` • ${dayHolidays.length} holidays` : ""}`;
+      ? `${dayTasks.length} ${getUkrainianTaskLabel(dayTasks.length)}${dayHolidays.length ? ` • ${dayHolidays.length} ${getUkrainianHolidayLabel(dayHolidays.length)}` : ""}`
+      : `${dayTasks.length} task${dayTasks.length === 1 ? "" : "s"}${dayHolidays.length ? ` • ${dayHolidays.length} holiday${dayHolidays.length === 1 ? "" : "s"}` : ""}`;
 
   return (
     <ModalOverlay onClick={onClose}>
@@ -81,9 +105,9 @@ export const TaskModal = ({
           type="button"
           aria-label={closeLabel}
           onClick={onClose}
-          style={{ top: 14, right: 16, fontSize: 26 }}
+          style={{ top: 14, right: 16 }}
         >
-          ×
+          <X size={18} />
         </CloseButton>
 
         {!user ? (
@@ -91,13 +115,23 @@ export const TaskModal = ({
             <h2>{translations.authRequiredTitle}</h2>
             <p>{translations.authRequiredDesc}</p>
             <SubmitButton onClick={onOpenAuth} style={{ marginTop: "20px" }}>
+              <LogIn size={16} />
               {translations.login}
             </SubmitButton>
           </div>
         ) : mode === "day-tasks" ? (
           <>
-            <h3 style={{ marginBottom: 6 }}>
-              📋 {translations.taskFor} {formattedDate}
+            <h3
+              style={{
+                marginBottom: 6,
+                display: "flex",
+                alignItems: "center",
+                fontSize: 16,
+                gap: 8,
+              }}
+            >
+              <CalendarDays size={18} />
+              {translations.taskFor} {formattedDate}
             </h3>
             <p style={{ margin: "0 0 16px", color: "#5e6c84", fontSize: 13 }}>
               {tasksCountLabel}
@@ -110,21 +144,32 @@ export const TaskModal = ({
                     marginBottom: 8,
                     fontSize: 12,
                     fontWeight: 700,
-                    color: "#b42318",
+                    // background: "rgba(192, 132, 151, 0.25)",
+                    borderColor: "#A36A7E",
+                    color: "#A36A7E",
                     textTransform: "uppercase",
                     letterSpacing: "0.04em",
                   }}
                 >
-                  🎉 {holidaysLabel}
+                  <span
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: 6,
+                    }}
+                  >
+                    <PartyPopper size={14} />
+                    {holidaysLabel}
+                  </span>
                 </div>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
                   {dayHolidays.map((holiday, index) => (
                     <HolidayLabel
                       key={`${holiday.name}-${index}`}
                       style={{
-                        background: "#fff0f0",
-                        borderColor: "#fecaca",
-                        color: "#b42318",
+                        backgroundColor: "rgba(192, 132, 151, 0.25)",
+                        borderColor: "#A36A7E",
+                        color: "#A36A7E",
                       }}
                     >
                       {holiday.localName}
@@ -160,30 +205,32 @@ export const TaskModal = ({
                     key={task._id}
                     onClick={() => onEditTask?.(task)}
                     style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 10,
-                      padding: "10px 12px",
+                      padding: 0,
                       borderRadius: 12,
                       background: "rgba(255,255,255,0.92)",
                       border: "1px solid #d8dee4",
                       boxShadow: "0 6px 18px rgba(15, 23, 42, 0.06)",
                       cursor: "pointer",
+                      overflow: "hidden",
+                      marginBottom: 10,
                     }}
                   >
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      {task.labels?.length ? (
-                        <LabelBarContainer>
-                          {task.labels.slice(0, 3).map((color) => (
-                            <LabelBar
-                              key={`${task._id}-${color}`}
-                              color={color}
-                            />
-                          ))}
-                        </LabelBarContainer>
-                      ) : null}
+                    {task.labels?.length ? (
+                      <LabelBarContainer>
+                        <LabelBar color={task.labels[0]} />
+                      </LabelBarContainer>
+                    ) : null}
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        padding: "10px 12px",
+                      }}
+                    >
                       <div
                         style={{
+                          flex: 1,
+                          minWidth: 0,
                           fontWeight: 700,
                           color: "#172b4d",
                           wordBreak: "break-word",
@@ -191,28 +238,30 @@ export const TaskModal = ({
                       >
                         {task.title}
                       </div>
+                      {onDeleteTask && task._id ? (
+                        <button
+                          type="button"
+                          aria-label="Delete task"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            void onDeleteTask(task._id || "");
+                          }}
+                          style={{
+                            border: "none",
+                            background: "transparent",
+                            color: "#C08497",
+                            lineHeight: 1,
+                            cursor: "pointer",
+                            display: "inline-flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            marginLeft: 8,
+                          }}
+                        >
+                          <Trash2 size={16} />
+                        </button>
+                      ) : null}
                     </div>
-
-                    {onDeleteTask && task._id ? (
-                      <button
-                        type="button"
-                        aria-label="Delete task"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          void onDeleteTask(task._id || "");
-                        }}
-                        style={{
-                          border: "none",
-                          background: "transparent",
-                          color: "#d1242f",
-                          fontSize: 22,
-                          lineHeight: 1,
-                          cursor: "pointer",
-                        }}
-                      >
-                        ×
-                      </button>
-                    ) : null}
                   </div>
                 ))
               )}
@@ -220,27 +269,38 @@ export const TaskModal = ({
 
             <ModalFooter
               style={{
-                justifyContent: "space-between",
+                justifyContent: "flex-end",
+                fontSize: 14,
                 gap: 8,
                 flexWrap: "wrap",
               }}
             >
               <Button type="button" onClick={onAddNew}>
-                ➕ {addTaskLabel}
+                <Plus size={16} />
+                {addTaskLabel}
               </Button>
-              <Button
+              {/* <Button
                 type="button"
                 onClick={onClose}
                 style={{ background: "#d0d7de", color: "#1f2328" }}
               >
                 {closeLabel}
-              </Button>
+              </Button> */}
             </ModalFooter>
           </>
         ) : (
           <>
-            <h3 style={{ marginBottom: 12 }}>
-              ✨ {translations.taskFor} {formattedDate}
+            <h3
+              style={{
+                marginBottom: 12,
+                display: "flex",
+                alignItems: "center",
+                fontSize: 14,
+                gap: 8,
+              }}
+            >
+              <CalendarDays size={18} />
+              {translations.taskFor} {formattedDate}
             </h3>
             <LabelsSection>
               <LabelsTitle>
@@ -280,14 +340,15 @@ export const TaskModal = ({
               placeholder={translations.modalPlaceholder}
             />
             <ModalFooter style={{ gap: 8, flexWrap: "wrap" }}>
-              <Button
+              {/* <Button
                 type="button"
                 onClick={onClose}
                 style={{ background: "#d0d7de", color: "#1f2328" }}
               >
                 {closeLabel}
-              </Button>
+              </Button> */}
               <Button type="button" onClick={onSave}>
+                <Save size={16} />
                 {translations.saveButton}
               </Button>
             </ModalFooter>

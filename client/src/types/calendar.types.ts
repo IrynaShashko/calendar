@@ -6,6 +6,7 @@ export type Translations = {
   searchPlaceholder: string;
   confirmDelete: string;
   emptyTitleAlert: string;
+  taskDeleted: string;
   saveError: string;
   brandName: string;
   saveButton: string;

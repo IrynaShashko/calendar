@@ -1,4 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { showConfirmToast } from "./components/ConfirmToast";
 
 import { Global } from "@emotion/react";
 
@@ -210,6 +213,22 @@ function App() {
     setTaskModalMode("form");
   };
 
+  const goToTask = (task: TaskType) => {
+    const taskDate = new Date(task.date);
+
+    setViewDate(new Date(taskDate.getFullYear(), taskDate.getMonth(), 1));
+    setSearchQuery("");
+
+    if (!isMobile) return;
+
+    setSelectedDate(taskDate);
+    setEditingTask(null);
+    setTaskTitle("");
+    setSelectedLabels([]);
+    setTaskModalMode("day-tasks");
+    setIsModalOpen(true);
+  };
+
   return (
     <>
       <Global styles={globalStyles} />
@@ -234,16 +253,7 @@ function App() {
               new Date(viewDate.getFullYear(), viewDate.getMonth() + 1, 1),
             )
           }
-          goToTask={(t) => {
-            setViewDate(
-              new Date(
-                new Date(t.date).getFullYear(),
-                new Date(t.date).getMonth(),
-                1,
-              ),
-            );
-            setSearchQuery("");
-          }}
+          goToTask={goToTask}
         />
 
         <DragDropContext
@@ -281,33 +291,28 @@ function App() {
                       </DayNumber>
                       {!isMobile && day.dayTasks.length > 0 && (
                         <TaskNumber>
-                          {day.dayTasks.length}{" "}
+                          {day.dayTasks.length}
                           {getCardLabel(day.dayTasks.length, language)}
                         </TaskNumber>
                       )}
-                      {isMobile &&
-                        (day.dayTasks.length > 0 ||
-                          day.dayHolidays.length > 0) && (
-                          <TaskDotsRow
-                            aria-label={`${day.dayTasks.length} tasks${day.dayHolidays.length ? ` and ${day.dayHolidays.length} holidays` : ""}`}
-                          >
-                            {day.dayTasks.slice(0, 2).map((task, idx) => (
-                              <TaskDot
-                                key={task._id || `${task.title}-${idx}`}
-                                color={task.labels?.[0]}
-                              />
-                            ))}
-                            {day.dayHolidays.length > 0 && (
-                              <TaskDot color="#d1242f" />
-                            )}
-                            {day.dayTasks.length > 2 && (
-                              <TaskNumber>
-                                +{day.dayTasks.length - 2}
-                              </TaskNumber>
-                            )}
-                          </TaskDotsRow>
-                        )}
                     </DayHeaderRow>
+                    {isMobile &&
+                      (day.dayTasks.length > 0 ||
+                        day.dayHolidays.length > 0) && (
+                        <TaskDotsRow
+                          aria-label={`${day.dayTasks.length} tasks${day.dayHolidays.length ? ` and ${day.dayHolidays.length} holidays` : ""}`}
+                        >
+                          {day.dayHolidays.length > 0 && (
+                            <TaskDot color="#B86C6D" />
+                          )}
+                          {day.dayTasks.map((task, idx) => (
+                            <TaskDot
+                              key={task._id || `${task.title}-${idx}`}
+                              color={task.labels?.[0]}
+                            />
+                          ))}
+                        </TaskDotsRow>
+                      )}
                     <TaskScrollContainer>
                       {!isMobile &&
                         day.dayHolidays.map((h, idx) => (
@@ -332,14 +337,17 @@ function App() {
                                   task={task}
                                   onDelete={async (e, id) => {
                                     e.stopPropagation();
-                                    if (
-                                      window.confirm(
-                                        translations[language].confirmDelete,
-                                      )
-                                    ) {
-                                      await deleteTask(id);
-                                      await fetchTasks();
-                                    }
+                                    showConfirmToast(
+                                      translations[language].confirmDelete,
+                                      async () => {
+                                        await deleteTask(id);
+                                        await fetchTasks();
+                                        toast.success(
+                                          translations[language].taskDeleted ||
+                                            "Task deleted!",
+                                        );
+                                      },
+                                    );
                                   }}
                                   onEdit={(e, t) => {
                                     e.stopPropagation();
@@ -388,13 +396,17 @@ function App() {
         }}
         onEditTask={(task) => openTaskEditor(task)}
         onDeleteTask={async (taskId) => {
-          if (window.confirm(translations[language].confirmDelete)) {
+          showConfirmToast(translations[language].confirmDelete, async () => {
             await deleteTask(taskId);
             await fetchTasks();
-          }
+            toast.success(
+              translations[language].taskDeleted || "Task deleted!",
+            );
+          });
         }}
       />
       <AuthModal translations={translations[language]} />
+      <ToastContainer position="top-center" autoClose={2000} hideProgressBar />
     </>
   );
 }
